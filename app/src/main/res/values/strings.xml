@@ -3,5 +3,8 @@
     <string name="string">搜索</string>
     <string name="go">GO</string>
     <string name="come_here">Come here</string>
+    <string name="map">Map</string>
+    <string name="transport">Transport</string>
+    <string name="bus">Bus</string>
     <string name="weather">Weather</string>
 </resources>

@@ -38,25 +38,59 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="@string/weather"
+                        android:id="@+id/textView"
+                        android:layout_gravity="center_horizontal" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/linearLayout2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"></LinearLayout>
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="@string/bus"
+                        android:id="@+id/textView2"
+                        android:layout_gravity="center_horizontal" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/linearLayout3"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"></LinearLayout>
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="@string/transport"
+                        android:id="@+id/textView3"
+                        android:layout_gravity="center_horizontal" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/linearLayout4"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"></LinearLayout>
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="@string/map"
+                        android:id="@+id/textView4"
+                        android:layout_gravity="center_horizontal" />
+                </LinearLayout>
             </FrameLayout>
         </LinearLayout>
     </TabHost>
