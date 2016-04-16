@@ -17,15 +17,21 @@ import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.Text;
 import com.baidu.mapapi.model.LatLng;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class ShowActivity extends AppCompatActivity {
     MapView mMapView = null;
-    String httpUrl3 = "http://apis.baidu.com/showapi_open_bus/oil_price/find";
-    String httpArg3 = "prov=";
-    String jsonResult3 = request3(httpUrl3, httpArg3);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +70,31 @@ public class ShowActivity extends AppCompatActivity {
         TextView _sProvince = (TextView) findViewById(R.id.sProvince);
         _sProvince.setText(province);
 
+        String httpUrl3 = "http://apis.baidu.com/showapi_open_bus/oil_price/find";
+        String httpArg3 = "prov=" + province;
+        String jsonResult3 = request3(httpUrl3, httpArg3);
+        String str;
+
+        TextView _sDate = (TextView) findViewById(R.id.sDate);
+        if (_sDate != null) {
+            if(jsonResult3!=null){
+                _sDate.setText(jsonResult3);
+            }
+            else{
+                _sDate.setText("No Data");
+            }
+        }
+        /*
+        try{
+            JSONObject jsonObject3 = new JSONObject(jsonResult3);
+            str = jsonObject3.getString("ct");
+            TextView _sDate = (TextView) findViewById(R.id.sDate);
+            _sDate.setText(str);
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+*/
+
         TabHost tabhost = (TabHost) findViewById(R.id.tabHost);
         tabhost.setup();
         tabhost.addTab(tabhost.newTabSpec("one").setIndicator("Weather").setContent(R.id.linearLayout));
@@ -92,8 +123,27 @@ public class ShowActivity extends AppCompatActivity {
     }
 
     public static String request3(String httpUrl3, String httpArg3){
-        BufferedReader reader = null;
         String result = null;
-        return "aaa";
+        StringBuffer sbf = new StringBuffer();
+        httpUrl3 = httpUrl3 + "?" + httpArg3;
+        try{
+            URL url = new URL(httpUrl3);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("apikey", "8da8d425b9a8dff6d58889f266a077f0");
+            connection.connect();
+            InputStream is = connection.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+            String strRead = null;
+            while ((strRead = reader.readLine()) != null){
+                sbf.append(strRead);
+                sbf.append("\r\n");
+            }
+            reader.close();
+            result = sbf.toString();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return result;
     }
 }

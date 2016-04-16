@@ -113,6 +113,7 @@
                         android:text="97#price"
                         android:id="@+id/pP97"
                         android:layout_gravity="center_horizontal" />
+
                 </LinearLayout>
 
                 <LinearLayout
