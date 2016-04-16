@@ -10,7 +10,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TabHost;
-import android.widget.TextView;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.MapStatus;
@@ -53,10 +52,9 @@ public class ShowActivity extends AppCompatActivity {
         mMapView.getMap().setMapStatus(mMapStatusUpdate);
 
 
-        /*Intent intent = getIntent();
-        String TextValue = intent.getStringExtra("City");
-        TextView text = (TextView) findViewById(R.id.textView);
-        text.setText(TextValue);*/
+        Intent intent = getIntent();
+        String city = intent.getStringExtra("City");
+        String province = intent.getStringExtra("Province");
 
         TabHost tabhost = (TabHost) findViewById(R.id.tabHost);
         tabhost.setup();

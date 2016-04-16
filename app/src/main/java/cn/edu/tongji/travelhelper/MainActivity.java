@@ -22,14 +22,18 @@ public class MainActivity extends AppCompatActivity {
     private Button.OnClickListener btnOnClick = new Button.OnClickListener(){
         public void onClick(View v){
             String city;
+            String province;
             EditText edittext = (EditText) findViewById(R.id.cityName);
+            EditText edittext2 = (EditText) findViewById(R.id.provinceName);
             city = edittext.getText().toString();
-            if (city.equals("")){
+            province = edittext2.getText().toString();
+            if (city.equals("") || province.equals("")){
                 return;
             }
             Intent intent = new Intent();
             intent.setClass(MainActivity.this, ShowActivity.class);
             intent.putExtra("City", city);
+            intent.putExtra("Province", province);
             MainActivity.this.startActivity(intent);
         }
     };
