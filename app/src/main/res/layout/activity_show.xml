@@ -36,14 +36,82 @@
                     android:id="@+id/linearLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:weightSum="1">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text="@string/weather"
-                        android:id="@+id/textView"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="Province"
+                        android:id="@+id/sProvince" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="Date"
+                        android:id="@+id/sDate"
+                        android:layout_gravity="center_horizontal" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="0#"
+                        android:id="@+id/sP0" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="0#price"
+                        android:id="@+id/pP0"
+                        android:layout_gravity="center_horizontal" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="90#"
+                        android:id="@+id/sP90" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="90#price"
+                        android:id="@+id/pP90"
+                        android:layout_gravity="center_horizontal" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="93#"
+                        android:id="@+id/sP93" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="93#price"
+                        android:id="@+id/pP93"
+                        android:layout_gravity="center_horizontal" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="97#"
+                        android:id="@+id/sP97" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="97#price"
+                        android:id="@+id/pP97"
                         android:layout_gravity="center_horizontal" />
                 </LinearLayout>
 

@@ -10,6 +10,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TabHost;
+import android.widget.TextView;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.MapStatus;
@@ -18,8 +19,13 @@ import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.model.LatLng;
 
+import java.io.BufferedReader;
+
 public class ShowActivity extends AppCompatActivity {
     MapView mMapView = null;
+    String httpUrl3 = "http://apis.baidu.com/showapi_open_bus/oil_price/find";
+    String httpArg3 = "prov=";
+    String jsonResult3 = request3(httpUrl3, httpArg3);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +61,8 @@ public class ShowActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String city = intent.getStringExtra("City");
         String province = intent.getStringExtra("Province");
+        TextView _sProvince = (TextView) findViewById(R.id.sProvince);
+        _sProvince.setText(province);
 
         TabHost tabhost = (TabHost) findViewById(R.id.tabHost);
         tabhost.setup();
@@ -81,5 +89,11 @@ public class ShowActivity extends AppCompatActivity {
         super.onPause();
         //在activity执行onPause时执行mMapView. onPause ()，实现地图生命周期管理
         mMapView.onPause();
+    }
+
+    public static String request3(String httpUrl3, String httpArg3){
+        BufferedReader reader = null;
+        String result = null;
+        return "aaa";
     }
 }
