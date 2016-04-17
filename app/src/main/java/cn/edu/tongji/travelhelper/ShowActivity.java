@@ -9,26 +9,22 @@ import android.location.LocationManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TabHost;
 import android.widget.TextView;
 
+import com.baidu.apistore.sdk.ApiCallBack;
+import com.baidu.apistore.sdk.ApiStoreSDK;
+import com.baidu.apistore.sdk.network.Parameters;
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
-import com.baidu.mapapi.map.Text;
 import com.baidu.mapapi.model.LatLng;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 public class ShowActivity extends AppCompatActivity {
     MapView mMapView = null;
@@ -70,30 +66,55 @@ public class ShowActivity extends AppCompatActivity {
         TextView _sProvince = (TextView) findViewById(R.id.sProvince);
         _sProvince.setText(province);
 
-        String httpUrl3 = "http://apis.baidu.com/showapi_open_bus/oil_price/find";
-        String httpArg3 = "prov=" + province;
-        String jsonResult3 = request3(httpUrl3, httpArg3);
-        String str;
 
-        TextView _sDate = (TextView) findViewById(R.id.sDate);
-        if (_sDate != null) {
-            if(jsonResult3!=null){
-                _sDate.setText(jsonResult3);
-            }
-            else{
-                _sDate.setText("No Data");
-            }
-        }
-        /*
-        try{
-            JSONObject jsonObject3 = new JSONObject(jsonResult3);
-            str = jsonObject3.getString("ct");
-            TextView _sDate = (TextView) findViewById(R.id.sDate);
-            _sDate.setText(str);
-        }catch (JSONException e){
-            e.printStackTrace();
-        }
-*/
+        //Oid Price
+        final TextView _sDate = (TextView) findViewById(R.id.sDate);
+        final TextView _pP0 = (TextView) findViewById(R.id.pP0);
+        final TextView _pP90 = (TextView) findViewById(R.id.pP90);
+        final TextView _pP93 = (TextView) findViewById(R.id.pP93);
+        final TextView _pP97 = (TextView) findViewById(R.id.pP97);
+        Parameters para = new Parameters();
+        para.put("prov", province);
+        ApiStoreSDK.execute("http://apis.baidu.com/showapi_open_bus/oil_price/find",
+                ApiStoreSDK.GET,
+                para,
+                new ApiCallBack(){
+                    public void onSuccess(int status, String responseString){
+                        Log.i("oriPrice", "onSuccess");
+                        Log.i("oriPrice", responseString);
+                        try{
+                            JSONObject jsonObject = new JSONObject(responseString);
+                            String str = jsonObject.getString("showapi_res_body");
+                            JSONObject jsonObject1 = new JSONObject(str);
+                            JSONArray jsonArray = jsonObject1.getJSONArray("list");
+                            for(int i = 0; i<jsonArray.length(); i++){
+                                JSONObject jsonObjectSon = (JSONObject) jsonArray.opt(i);
+                                _sDate.setText(jsonObjectSon.getString("ct"));
+                                _pP0.setText(jsonObjectSon.getString("p0"));
+                                _pP90.setText(jsonObjectSon.getString("p90"));
+                                _pP93.setText(jsonObjectSon.getString("p93"));
+                                _pP97.setText(jsonObjectSon.getString("p97"));
+                            }
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                        Log.i("oriPrice", "finish");
+                    }
+                    public void onComplete() {
+                        Log.i("oriPrice", "onComplete");
+                    }
+                    public void onError(int status, String responseString, Exception e){
+                        Log.i("oriPrice", "onError, status: " + status);
+                        Log.i("oriPrice", "errMsg: " + (e == null ? "" : e.getMessage()));
+                    }
+                }
+        );
+
+
+
+
+
+
 
         TabHost tabhost = (TabHost) findViewById(R.id.tabHost);
         tabhost.setup();
@@ -122,28 +143,5 @@ public class ShowActivity extends AppCompatActivity {
         mMapView.onPause();
     }
 
-    public static String request3(String httpUrl3, String httpArg3){
-        String result = null;
-        StringBuffer sbf = new StringBuffer();
-        httpUrl3 = httpUrl3 + "?" + httpArg3;
-        try{
-            URL url = new URL(httpUrl3);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            connection.setRequestProperty("apikey", "8da8d425b9a8dff6d58889f266a077f0");
-            connection.connect();
-            InputStream is = connection.getInputStream();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-            String strRead = null;
-            while ((strRead = reader.readLine()) != null){
-                sbf.append(strRead);
-                sbf.append("\r\n");
-            }
-            reader.close();
-            result = sbf.toString();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return result;
-    }
+
 }

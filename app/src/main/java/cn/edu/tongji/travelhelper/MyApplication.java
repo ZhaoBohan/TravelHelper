@@ -4,9 +4,6 @@ import android.app.Application;
 
 import com.baidu.apistore.sdk.ApiStoreSDK;
 
-/**
- * Created by Cloudiee on 2016/4/17.
- */
 public class MyApplication extends Application{
     @Override
     public void onCreate() {
