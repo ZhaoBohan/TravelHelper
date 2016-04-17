@@ -41,6 +41,8 @@ import org.json.JSONObject;
 public class ShowActivity extends AppCompatActivity {
     MapView mMapView = null;
     private Context mContext;
+    String city;
+    String province;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,8 @@ public class ShowActivity extends AppCompatActivity {
         setContentView(R.layout.activity_show);
         Button button = (Button) findViewById(R.id.button);
         button.setOnClickListener(btnOnClick);
+        Button button2 = (Button) findViewById(R.id.button2);
+        button2.setOnClickListener(btnOnClick2);
         mContext = this;
 
         final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -77,8 +81,8 @@ public class ShowActivity extends AppCompatActivity {
 
 
         Intent intent = getIntent();
-        String city = intent.getStringExtra("City");
-        String province = intent.getStringExtra("Province");
+        city = intent.getStringExtra("City");
+        province = intent.getStringExtra("Province");
         TextView _sProvince = (TextView) findViewById(R.id.sProvince);
         _sProvince.setText(province);
         TextView _sCity = (TextView) findViewById(R.id.sCity);
@@ -212,14 +216,14 @@ public class ShowActivity extends AppCompatActivity {
 
 
 
+
         TabHost tabhost = (TabHost) findViewById(R.id.tabHost);
         tabhost.setup();
         tabhost.addTab(tabhost.newTabSpec("one").setIndicator("Weather").setContent(R.id.linearLayout));
         tabhost.addTab(tabhost.newTabSpec("two").setIndicator("Spot").setContent(R.id.linearLayout2));
         tabhost.addTab(tabhost.newTabSpec("three").setIndicator("Oil").setContent(R.id.linearLayout3));
         tabhost.addTab(tabhost.newTabSpec("four").setIndicator("Plane").setContent(R.id.linearLayout4));
-        tabhost.addTab(tabhost.newTabSpec("five").setIndicator("Train").setContent(R.id.linearLayout5));
-        tabhost.addTab(tabhost.newTabSpec("six").setIndicator("Map").setContent(R.id.linearLayout6));
+        tabhost.addTab(tabhost.newTabSpec("five").setIndicator("Map").setContent(R.id.linearLayout5));
     }
 
     @Override
@@ -380,6 +384,52 @@ public class ShowActivity extends AppCompatActivity {
             );
 
 
+        }
+    };
+
+
+    //spot
+    private Button.OnClickListener btnOnClick2 = new Button.OnClickListener(){
+        public void onClick(View v){
+            String spotName;
+            EditText editText = (EditText) findViewById(R.id.spotName);
+            spotName = editText.getText().toString();
+            final TextView sAddress = (TextView) findViewById(R.id.sAddress);
+            final TextView sDistrict = (TextView) findViewById(R.id.sDistrict);
+            final TextView sType = (TextView) findViewById(R.id.sType);
+            Parameters parameters = new Parameters();
+            parameters.put("keyWord", spotName);
+            parameters.put("cityName", city);
+            parameters.put("number", "1");
+            parameters.put("page", "1");
+            parameters.put("output", "json");
+            ApiStoreSDK.execute("http://apis.baidu.com/apistore/point/search",
+                    ApiStoreSDK.GET,
+                    parameters,
+                    new ApiCallBack(){
+                        public void onSuccess(int status, String responseString){
+                            Log.i("spot", "onSuccess");
+                            Log.i("spot", responseString);
+                            try{
+                                JSONObject jsonObject = new JSONObject(responseString);
+                                JSONArray jsonArray = jsonObject.getJSONArray("pointList");
+                                JSONObject jsonObjectSon = (JSONObject) jsonArray.opt(0);
+                                sAddress.setText(jsonObjectSon.getString("address"));
+                                sDistrict.setText(jsonObjectSon.getString("district"));
+                                sType.setText(jsonObjectSon.getString("type"));
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+                        }
+                        public void onComplete() {
+                            Log.i("spot", "onComplete");
+                        }
+                        public void onError(int status, String responseString, Exception e){
+                            Log.i("spot", "onError, status: " + status);
+                            Log.i("spot", "errMsg: " + (e == null ? "" : e.getMessage()));
+                        }
+                    }
+            );
         }
     };
 
