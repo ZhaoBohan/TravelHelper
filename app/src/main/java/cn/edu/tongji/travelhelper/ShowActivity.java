@@ -65,6 +65,8 @@ public class ShowActivity extends AppCompatActivity {
         String province = intent.getStringExtra("Province");
         TextView _sProvince = (TextView) findViewById(R.id.sProvince);
         _sProvince.setText(province);
+        TextView _sCity = (TextView) findViewById(R.id.sCity);
+        _sCity.setText(city);
 
 
         //Oid Price
@@ -94,11 +96,11 @@ public class ShowActivity extends AppCompatActivity {
                                 _pP90.setText(jsonObjectSon.getString("p90"));
                                 _pP93.setText(jsonObjectSon.getString("p93"));
                                 _pP97.setText(jsonObjectSon.getString("p97"));
+                                Log.i("oriPrice", "Finish");
                             }
                         }catch (Exception e){
                             e.printStackTrace();
                         }
-                        Log.i("oriPrice", "finish");
                     }
                     public void onComplete() {
                         Log.i("oriPrice", "onComplete");
@@ -111,17 +113,93 @@ public class ShowActivity extends AppCompatActivity {
         );
 
 
+        //Weather
+        final TextView _dayWeather = (TextView) findViewById(R.id.dayWeather);
+        final TextView _nightWeather = (TextView) findViewById(R.id.nightWeather);
+        final TextView _hum = (TextView) findViewById(R.id.hum);
+        final TextView _pop = (TextView) findViewById(R.id.pop);
+        final TextView _maxTem = (TextView) findViewById(R.id.maxTem);
+        final TextView _minTem = (TextView) findViewById(R.id.minTem);
+        final TextView _wind = (TextView) findViewById(R.id.wind);
+        final TextView _windWay = (TextView) findViewById(R.id.windWay);
+        final TextView _dayWeather2 = (TextView) findViewById(R.id.dayWeather2);
+        final TextView _nightWeather2 = (TextView) findViewById(R.id.nightWeather2);
+        final TextView _hum2 = (TextView) findViewById(R.id.hum2);
+        final TextView _pop2 = (TextView) findViewById(R.id.pop2);
+        final TextView _maxTem2 = (TextView) findViewById(R.id.maxTem2);
+        final TextView _minTem2 = (TextView) findViewById(R.id.minTem2);
+        final TextView _wind2 = (TextView) findViewById(R.id.wind2);
+        final TextView _windWay2 = (TextView) findViewById(R.id.windWay2);
+        Parameters para2 = new Parameters();
+        para2.put("city", city);
+        ApiStoreSDK.execute("http://apis.baidu.com/heweather/weather/free",
+                ApiStoreSDK.GET,
+                para2,
+                new ApiCallBack(){
+                    public void onSuccess(int status, String responseString){
+                        Log.i("Weather", "onSuccess");
+                        Log.i("Weather", responseString);
+                        try{
+                            String str = "";
+                            JSONObject jsonObject = new JSONObject(responseString);
+                            JSONArray jsonArray = jsonObject.getJSONArray("HeWeather data service 3.0");
+                            JSONObject jsonObject1 = (JSONObject) jsonArray.opt(0);
+                            JSONArray jsonArray1 = jsonObject1.getJSONArray("daily_forecast");
+                            JSONObject jsonObject2 = (JSONObject) jsonArray1.opt(0);   //Today
+                            _hum.setText(jsonObject2.getString("hum"));
+                            _pop.setText(jsonObject2.getString("pop"));
+                            str = jsonObject2.getString("cond");
+                            JSONObject jsonObject3 = new JSONObject(str);              //Today cond
+                            _dayWeather.setText(jsonObject3.getString("txt_d"));
+                            _nightWeather.setText(jsonObject3.getString("txt_n"));
+                            str = jsonObject2.getString("wind");
+                            JSONObject jsonObject4 = new JSONObject(str);              //Today wind
+                            _wind.setText(jsonObject4.getString("sc"));
+                            _windWay.setText(jsonObject4.getString("dir"));
+                            str = jsonObject2.getString("tmp");                        //Today tmp
+                            JSONObject jsonObject5 = new JSONObject(str);
+                            _maxTem.setText(jsonObject5.getString("max"));
+                            _minTem.setText(jsonObject5.getString("min"));
 
-
-
+                            JSONObject jsonObject6 = (JSONObject) jsonArray1.opt(1);   //Tomorrow
+                            _hum2.setText(jsonObject6.getString("hum"));
+                            _pop2.setText(jsonObject6.getString("pop"));
+                            str = jsonObject6.getString("cond");
+                            JSONObject jsonObject7 = new JSONObject(str);              //Tomorrow cond
+                            _dayWeather2.setText(jsonObject7.getString("txt_d"));
+                            _nightWeather2.setText(jsonObject7.getString("txt_n"));
+                            str = jsonObject6.getString("wind");
+                            JSONObject jsonObject8 = new JSONObject(str);              //Tomorrow wind
+                            _wind2.setText(jsonObject8.getString("sc"));
+                            _windWay2.setText(jsonObject8.getString("dir"));
+                            str = jsonObject6.getString("tmp");                        //Tomorrow tmp
+                            JSONObject jsonObject9 = new JSONObject(str);
+                            _maxTem2.setText(jsonObject9.getString("max"));
+                            _minTem2.setText(jsonObject9.getString("min"));
+                            Log.i("Weather", "Finish");
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                    public void onComplete() {
+                        Log.i("Weather", "onComplete");
+                    }
+                    public void onError(int status, String responseString, Exception e){
+                        Log.i("Weather", "onError, status: " + status);
+                        Log.i("Weather", "errMsg: " + (e == null ? "" : e.getMessage()));
+                    }
+                }
+        );
 
 
         TabHost tabhost = (TabHost) findViewById(R.id.tabHost);
         tabhost.setup();
         tabhost.addTab(tabhost.newTabSpec("one").setIndicator("Weather").setContent(R.id.linearLayout));
-        tabhost.addTab(tabhost.newTabSpec("two").setIndicator("Bus").setContent(R.id.linearLayout2));
-        tabhost.addTab(tabhost.newTabSpec("three").setIndicator("Transport").setContent(R.id.linearLayout3));
-        tabhost.addTab(tabhost.newTabSpec("four").setIndicator("Map").setContent(R.id.linearLayout4));
+        tabhost.addTab(tabhost.newTabSpec("two").setIndicator("Spot").setContent(R.id.linearLayout2));
+        tabhost.addTab(tabhost.newTabSpec("three").setIndicator("Oil").setContent(R.id.linearLayout3));
+        tabhost.addTab(tabhost.newTabSpec("four").setIndicator("Plane").setContent(R.id.linearLayout4));
+        tabhost.addTab(tabhost.newTabSpec("five").setIndicator("Train").setContent(R.id.linearLayout5));
+        tabhost.addTab(tabhost.newTabSpec("six").setIndicator("Map").setContent(R.id.linearLayout6));
     }
 
     @Override
